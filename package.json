@@ -1,0 +1,19 @@
+{
+  "name": "kindergarten",
+  "author": {
+    "name": "Fabrizio Rizzi",
+    "email": "fabrizio@fabriziorizzi.it"
+  },
+  "scripts": {
+    "client": "yarn workspace @kindergarten/client start",
+    "server": "yarn workspace @kindergarten/server start",
+    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "private": true,
+  "dependencies": {
+    "concurrently": "^6.4.0"
+  }
+}

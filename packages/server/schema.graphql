@@ -1,0 +1,35 @@
+type PageInfo {
+  endCursor: Int
+  hasNextPage: Boolean
+}
+
+type Kindergarten {
+  ID_NIL: Int
+  ANNOSCOL: Int
+  CODICE: Int
+  DENOMINAZIONE: String
+  GRADO: String
+  TIPO: String
+  PARITARIA: String
+  INDIRIZZO: String
+  CODVIA: Int
+  MUNICIPIO: Int
+  NIL: String,
+  LONG_X_4326: Float
+  LAT_Y_4326: Float
+  Location: String
+}
+
+type KindergartenEdge {
+  cursor: Int!
+  node: Kindergarten
+}
+
+type KindergartenConnection {
+  edges: [KindergartenEdge]
+  pageInfo: PageInfo
+}
+
+type Query {
+  kindergartens(q: String, after: Int, limit: Int): KindergartenConnection
+}
