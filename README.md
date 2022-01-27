@@ -1,4 +1,3 @@
-# kindergartens
-Kindergartens in Milan 
+# Kindergartens in Milan 
 
 Built with Apollo Server
