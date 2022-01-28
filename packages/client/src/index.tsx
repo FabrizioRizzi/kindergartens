@@ -1,12 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "./index.css";
+import "antd/dist/antd.css";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { relayStylePagination } from "@apollo/client/utilities";
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        kindergartens: relayStylePagination(),
+      },
+    },
+  },
+});
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/",
+  cache,
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

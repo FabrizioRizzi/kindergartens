@@ -1,26 +1,56 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { useMemo, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
+import { Connection, Kindergarten } from "@kindergarten/server/types";
+import Table, { ColumnsType } from "antd/lib/table";
 
-function App() {
+export const GET_ALL_POKEMONS = gql`
+  query Query($limit: Int, $after: Int) {
+    kindergartens(limit: $limit, after: $after) {
+      edges {
+        node {
+          DENOMINAZIONE
+          CODICE
+        }
+      }
+    }
+  }
+`;
+
+const App = () => {
+  const [q, setQ] = useState<string>("");
+
+  const { loading, data } = useQuery<{
+    kindergartens: Connection<Kindergarten>;
+  }>(GET_ALL_POKEMONS, { variables: { q } });
+
+  const dataSource = data?.kindergartens.edges.map((pokemon) => pokemon.node);
+
+  const columns: ColumnsType<Kindergarten> = useMemo(
+    () => [
+      {
+        title: "Codice",
+        dataIndex: "CODICE",
+        key: "CODICE",
+      },
+      {
+        title: "Denominazione",
+        dataIndex: "DENOMINAZIONE",
+        key: "DENOMINAZIONE",
+      },
+    ],
+    []
+  );
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Table
+        dataSource={dataSource}
+        pagination={false}
+        columns={columns}
+        rowKey="CODICE"
+        loading={loading}
+      />
     </div>
   );
-}
+};
 
 export default App;
